@@ -1,13 +1,13 @@
-Package: rpkg
-Title: Title
-Version: 0.0.0
+Package: country256
+Title: Encode Countries as Raw Vectors
+Version: 0.1.0
 Authors@R: 
     person(given = "Hugh",
            family = "Parsonage",
            role = c("aut", "cre"),
            email = "hugh.parsonage@gmail.com")
-Description: ..
+Description: Given there are fewer than 256 countries in typical formulations, encoding them as a vector of 1-byte elements can conserve memory.
 License: GPL-2
 Encoding: UTF-8
-
-
+RoxygenNote: 7.2.0
+Suggests: tinytest
