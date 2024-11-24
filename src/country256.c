@@ -115,6 +115,9 @@ enum iso3 {
   VIR, VNM, VUT, WLF, WSM, YEM, ZAF, ZMB, ZWE
 };
 
+
+
+
 int find_str_in_strX(const char * x, const char * X[nCountries]) {
   for (int j = 0; j < nCountries; ++j) {
     if (x[0] == X[j][0] &&
@@ -132,6 +135,9 @@ int find_str_in_sorted_strX(const char * x, const char * X[nCountries]) {
   int upp = nCountries - 1;
   // should only require 9 passes at max
   for (int k = 0; k < 10; ++k) {
+    if (low > upp) {
+      return 0;
+    }
     int mid = (low + upp) / 2;
     int cmp = strcmp(X[mid], x);
 
@@ -323,6 +329,31 @@ SEXP C_DecodeCountry256(SEXP x, SEXP To, SEXP TreatNA) {
 
   UNPROTECT(1);
   return ans;
+}
+
+void print256_raw(SEXP x, SEXP ii) {
+  int i_ = asInteger(ii);
+  if (i_ < 1) {
+    error("(print256_raw): i was not of positive integer value so will not be printed");
+  }
+  R_xlen_t N = xlength(x);
+  unsigned char * xp = RAW(x);
+  if (i_ > N) {
+    i_ = N;
+  }
+  Rprintf("country256(len=%lld): ", (long long)N);
+
+  for (int i = 0; i < i_; ++i) {
+    Rprintf("%s ", ISO3[(int)xp[i]]);
+  }
+}
+
+SEXP C_print256(SEXP x, SEXP ii) {
+  switch(TYPEOF(x)) {
+  case RAWSXP:
+    print256_raw(x, ii);
+  }
+  return R_NilValue;
 }
 
 
